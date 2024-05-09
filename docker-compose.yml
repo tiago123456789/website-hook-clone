@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+
+  application:
+    build: 
+      context: .
+    ports:
+      - 8000:8000
+    container_name: website-hook-clone-application
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '1' 
+          memory: 512M 
+
+  worker:
+    build: 
+      context: .
+    container_name: website-hook-clone-worker
+    command: "php artisan queue:work"
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '1' 
+          memory: 512M 
+  
+  worker2:
+    build: 
+      context: .
+    container_name: website-hook-clone-worker-2
+    command: "php artisan queue:work"
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '1' 
+          memory: 512M 
+
+  queue:
+    image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    ulimits:
+      memlock: -1
+    ports:
+      - "6379:6379"
+    volumes:
+      - dragonflydata:/data
+    networks:
+      - default
+
+volumes:
+  dragonflydata:
+
+networks:
+  default:
+    driver: bridge
