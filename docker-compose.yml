@@ -44,6 +44,11 @@ services:
 
   queue:
     image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    deploy:
+      resources:
+        limits:
+          cpus: '1' 
+          memory: 512M 
     ulimits:
       memlock: -1
     ports:
