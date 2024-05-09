@@ -1,6 +1,9 @@
 About
 ========
 
+The project is proof of concept where I tried to created feature where allow generate webhook url and accept request in this webhook url.
+
+The main goal in this project is make the webhook url access huge volume of requests using PHP + Laravel.
 
 Technologies
 ===============
@@ -12,6 +15,15 @@ Technologies
 - Docker 
 - Docker-compose
 - Cockroach(Database)
+
+Things I did to improve performance:
+======================================
+
+- Enabled PHP opcache 
+- Enabled PHP jit
+- Execute command **php artisan optimize** to cache the laravel **routes** and **config**
+- Laravel octane + swoole to enable asynchronous programming for PHP, work as Node.js.
+- DragonflyDB is solution to replace Redis where can handle more interactions using same machine resources.
 
 Architecture:
 ==============
