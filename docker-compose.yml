@@ -58,8 +58,19 @@ services:
     networks:
       - default
 
+  database:
+    image: postgres
+    volumes:
+      - database:/var/lib/postgresql/data 
+    environment:
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+    container_name: website-hook-clone-database
+
 volumes:
   dragonflydata:
+  database:
 
 networks:
   default:

@@ -25,6 +25,25 @@ Things I did to improve performance:
 - Laravel octane + swoole to enable asynchronous programming for PHP, work as Node.js.
 - DragonflyDB is solution to replace Redis where can handle more interactions using same machine resources.
 
+Instructions to run project:
+================================
+- Clone repository
+- Create file **.env** file based **.env.exmaple** file. WARN: you need changes some envs like:
+
+    ```
+        DATABASE_URL='postgresql://postgres:root@database:5432/postgres'
+        DB_CONNECTION=pgsql  
+        QUEUE_CONNECTION=redis
+        
+        REDIS_HOST=queue
+        REDIS_PASSWORD=null
+        REDIS_PORT=6379
+        REDIS_CLIENT=predis      
+    ```
+- Execute command **docker-compose up -d --build** to run the follow containers: api, database, queue, worker and worker2. To access api address http://localhost:8000
+- Execute command **docker exec -it website-hook-clone-application php artisan migrate** to run migrations on database container.
+
+
 Architecture:
 ==============
 
