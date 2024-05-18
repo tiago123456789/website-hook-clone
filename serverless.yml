@@ -1,0 +1,99 @@
+service: laravel
+
+provider:
+    name: aws
+    region: us-east-1
+    environment:
+        APP_ENV: production
+        QUEUE_CONNECTION: sqs
+        SQS_QUEUE: !Ref MyQueue
+
+    iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+      Resource: 
+        Fn::GetAtt: [MyQueue, Arn]
+
+package:
+    patterns:
+        - '!node_modules/**'
+        - '!public/storage'
+        - '!resources/assets/**'
+        - '!storage/**'
+        - '!tests/**'
+
+functions:
+
+    web:
+        handler: Bref\LaravelBridge\Http\OctaneHandler
+        runtime: php-81
+        environment:
+            BREF_LOOP_MAX: 250
+            OCTANE_PERSIST_DATABASE_SESSIONS: 1
+        timeout: 28
+        events:
+            - httpApi: '*'
+
+    artisan:
+        handler: artisan
+        runtime: php-81-console
+        timeout: 720
+
+    job:
+        handler: Bref\LaravelBridge\Queue\QueueHandler
+        runtime: php-81
+        timeout: 10
+        events:
+            - sqs:
+                arn: 
+                    Fn::GetAtt: [MyQueue, Arn]
+
+    job-2:
+        handler: Bref\LaravelBridge\Queue\QueueHandler
+        runtime: php-81
+        timeout: 10 
+        events:
+            - sqs: 
+                arn: 
+                    Fn::GetAtt: [MyQueue, Arn]
+
+
+    job-3:
+        handler: Bref\LaravelBridge\Queue\QueueHandler
+        runtime: php-81
+        timeout: 10
+        events:
+            - sqs: 
+                arn: 
+                    Fn::GetAtt: [MyQueue, Arn]
+
+    job-4:
+        handler: Bref\LaravelBridge\Queue\QueueHandler
+        runtime: php-81
+        timeout: 10
+        events:
+            - sqs: 
+                arn: 
+                    Fn::GetAtt: [MyQueue, Arn]
+
+    job-5:
+        handler: Bref\LaravelBridge\Queue\QueueHandler
+        runtime: php-81
+        timeout: 10
+        events:
+            - sqs: 
+                arn: 
+                    Fn::GetAtt: [MyQueue, Arn]
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: default
+
+plugins:
+  - ./vendor/bref/bref
+  - serverless-lift
