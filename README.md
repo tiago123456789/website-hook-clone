@@ -51,7 +51,7 @@ Instructions to run project:
 
 ### Explaining the architecture
 
-- The user make request using webhook url to make request for Laravel application.
+- The user make request using webhook url for Laravel application.
 - The application take the request data like querystring and body request to send for queue, because prevent overload the database with many insert operations.
 - The worker 1 and worker 2 get messages and process each message and save on DB.
 
